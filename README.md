@@ -1,7 +1,11 @@
 # kafka-streams-join
 Join two streams and publish it.
 
-- start project setup with docker-compose up
+Sources:
+* https://github.com/confluentinc/kafka-streams-examples/blob/5.3.1-post/src/test/java/io/confluent/examples/streams/StreamToTableJoinIntegrationTest.java
+
+
+start project setup with ```docker-compose up```
 
 ## Create two topics
 At first you need the kafka-tools, which is a collection of shell scripts
