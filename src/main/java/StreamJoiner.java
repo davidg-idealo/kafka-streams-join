@@ -9,13 +9,7 @@ import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KTable;
 import org.apache.kafka.streams.kstream.Produced;
 
-/**
- * @author david.graesser
- * @since 2019-09-27
- */
 public class StreamJoiner {
-
-
     private static final String customerTopic = "customer-v1";
     private static final String paymentTopic = "payment-v1";
     private static final String outputTopic = "output-topic";
@@ -38,7 +32,7 @@ public class StreamJoiner {
         final KTable<String, String> customerTable = builder.table(customerTopic, Consumed.with(stringSerde, stringSerde));
         final KTable<String, String> paymentTable = builder.table(paymentTopic, Consumed.with(stringSerde, stringSerde));
         final KTable<String, String> customerPaymentTable = customerTable.join(paymentTable,
-                (customerValue, paymentValue) -> customerValue + "-" +paymentValue);
+                (customerValue, paymentValue) -> customerValue + "-" + paymentValue);
         customerPaymentTable.toStream().to(outputTopic, Produced.with(stringSerde, stringSerde));
 
         KafkaStreams kafkaStreams = new KafkaStreams(builder.build(), streamsConfiguration);
