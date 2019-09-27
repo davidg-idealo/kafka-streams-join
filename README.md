@@ -1,9 +1,11 @@
 # kafka-streams-join
-Join two streams and publish it.
+## Goal
+Join two streams and publish the result to a new topic with using the Kafka Stream DSL.
+In this simple example we have two entites the customer and the corresponding payment method.
 
 Sources:
+* https://www.confluent.io/blog/introducing-kafka-streams-stream-processing-made-simple/
 * https://github.com/confluentinc/kafka-streams-examples/blob/5.3.1-post/src/test/java/io/confluent/examples/streams/StreamToTableJoinIntegrationTest.java
-
 
 start project setup with ```docker-compose up```
 
@@ -19,13 +21,15 @@ You can download the whole package at https://www.apache.org/dyn/closer.cgi?path
 ```
 
 ## Create console producer
+Start the console producer with the command:
 ```
 ./kafka-console-producer.sh --broker-list localhost:9092 --topic customer-v1 --property "parse.key=true" --property "key.separator=#"
 ```
 ```
 ./kafka-console-producer.sh --broker-list localhost:9092 --topic payment-v1 --property "parse.key=true" --property "key.separator=#"
 ```
-##two entities
+Afterwards pase the json model from each entity in the corresponding producer terminal.
+## Entites data
 ###Customer
 ```
 {"id":"1234"}#{"name":"Robbin","age":"39","mobile":"123456789"}
@@ -33,4 +37,10 @@ You can download the whole package at https://www.apache.org/dyn/closer.cgi?path
 ###Payment option
 ```
 {"id":"1234"}#{"payment":"VISA","cardnumber": "9876543210"}
+```
+
+## Result
+You should see in the output-topic:
+```
+{"name":"Robbin","age":"39","mobile":"123456789"}-{"payment":"VISA","cardnumber": "9876543210"}
 ```
