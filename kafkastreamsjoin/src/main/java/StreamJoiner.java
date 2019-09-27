@@ -2,6 +2,7 @@ import java.util.Properties;
 
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.Consumed;
@@ -40,5 +41,11 @@ public class StreamJoiner {
                 (customerValue, paymentValue) -> customerValue + "-" +paymentValue);
         customerPaymentTable.toStream().to(outputTopic, Produced.with(stringSerde, stringSerde));
 
+        KafkaStreams kafkaStreams = new KafkaStreams(builder.build(), streamsConfiguration);
+        kafkaStreams.start();
+
+        Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
     }
+
+
 }
